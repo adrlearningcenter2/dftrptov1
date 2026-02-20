@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard</title>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+
+<div id="loginPage" class="flex items-center justify-center min-h-screen">
+  <div class="bg-white p-8 rounded-xl shadow-xl w-80">
+    <h2 class="text-xl font-bold mb-6 text-center">Admin Login</h2>
+    <input id="adminId" type="text" placeholder="Admin ID" class="w-full border p-3 rounded-lg mb-3">
+    <input id="adminPw" type="password" placeholder="Password" class="w-full border p-3 rounded-lg mb-4">
+    <button onclick="login()" class="w-full bg-indigo-600 text-white py-2 rounded-lg">Login</button>
+  </div>
+</div>
+
+<div id="dashboard" class="hidden p-6">
+
+  <h1 class="text-2xl font-bold mb-6">Dashboard Admin</h1>
+
+  <div class="bg-white rounded-xl shadow p-6 mb-6">
+    <h2 class="font-semibold mb-4">Tambah Materi</h2>
+    <input id="materiBaru" type="text" placeholder="Nama Materi" class="border p-3 rounded-lg w-full mb-3">
+    <button onclick="tambahMateri()" class="bg-green-600 text-white px-4 py-2 rounded-lg">Tambah</button>
+  </div>
+
+  <div class="bg-white rounded-xl shadow p-6">
+    <h2 class="font-semibold mb-4">Data Absensi</h2>
+    <div class="overflow-x-auto">
+      <table class="min-w-full text-sm">
+        <thead class="bg-gray-200">
+          <tr>
+            <th class="p-2">Tanggal</th>
+            <th class="p-2">ID</th>
+            <th class="p-2">Nama</th>
+            <th class="p-2">Materi</th>
+          </tr>
+        </thead>
+        <tbody id="dataTable"></tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<script>
+
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxip9WFx1s9-yxR3LVCdgOGiqpCRHAREgAdhgPyKz7HLZDPHV8JeY1HjlKwJ7OedoaP/exec";
+
+function login() {
+  if (adminId.value === "ADRLC" && adminPw.value === "Adrlc123") {
+    loginPage.classList.add("hidden");
+    dashboard.classList.remove("hidden");
+    loadData();
+  } else {
+    alert("Login salah");
+  }
+}
+
+function loadData() {
+  fetch(WEB_APP_URL + "?action=getAbsensi")
+    .then(res => res.json())
+    .then(data => {
+      data.slice(1).forEach(row => {
+        dataTable.innerHTML += `
+          <tr class="border-b">
+            <td class="p-2">${row[0]}</td>
+            <td class="p-2">${row[1]}</td>
+            <td class="p-2">${row[2]}</td>
+            <td class="p-2">${row[5]}</td>
+          </tr>
+        `;
+      });
+    });
+}
+
+function tambahMateri() {
+  fetch(WEB_APP_URL + "?action=addMateri&materi=" + encodeURIComponent(materiBaru.value))
+    .then(() => {
+      alert("Materi berhasil ditambahkan");
+      materiBaru.value = "";
+    });
+}
+
+</script>
+</body>
+</html>
