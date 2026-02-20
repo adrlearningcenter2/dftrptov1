@@ -29,7 +29,7 @@
       <input type="text" id="namaLengkap" placeholder="Nama Lengkap"
         class="w-full border rounded-xl p-3" required>
 
-      <input type="text" id="batchPTU" placeholder="Batch PTU"
+      <input type="text" id="batchPTO" placeholder="Batch PTO"
         class="w-full border rounded-xl p-3" required>
 
       <select id="kehadiran"
@@ -160,7 +160,7 @@ document.getElementById("attendanceForm").addEventListener("submit", function(e)
   const formData = new URLSearchParams();
   formData.append("idPeserta", idPeserta.value);
   formData.append("namaLengkap", namaLengkap.value);
-  formData.append("batchPTU", batchPTU.value);
+  formData.append("batchPTO", batchPTO.value);
   formData.append("kehadiran", kehadiran.value);
   formData.append("namaMateri", namaMateri.value);
   formData.append("tanggal", tanggal.value);
